@@ -43,9 +43,22 @@ State is tracked via `_prevRas` / `_prevVirtual` HashSets; diffs fire `VpnEvent`
 
 Dynamically renders a 32×32 shield icon via GDI+ at runtime (green checkmark = connected, grey X = disconnected). No embedded .ico files.
 
+### Settings (Settings/, Core/SettingsService.cs)
+
+`SettingsService` persists `AppSettings` to `%LOCALAPPDATA%\VpnMonitor\settings.json` using atomic writes (write to `.tmp`, then `File.Move`). It also manages the Windows autostart registry key (`HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`).
+
+`SettingsWindow` is a frameless dark-themed WPF window implementing `INotifyPropertyChanged` directly (no MVVM framework). Save flow: `SettingsWindow.SettingsSaved` → `App.OnSettingsSaved()` → `SettingsService.Save()`, which also live-updates poll interval and notification duration on the running services.
+
+### Implementation notes
+
+- WinForms `NotifyIcon` is used because WPF has no native tray icon support — the csproj enables both `UseWPF` and `UseWindowsForms`.
+- 300ms `DispatcherTimer` debounce on tray click distinguishes single-click (open settings) from double-click (check status now).
+- First poll is silent (`_initialized` flag in `VpnMonitorService`) to avoid spurious events on app startup.
+- `VpnMonitorService.GetAllVpnConnections()` is a static method for on-demand status checks, used by the "Проверить сейчас" context menu item.
+
 ## Conventions
 
-- Namespace: `VpnMonitor` root with `Core`, `Models`, `Notifications` sub-namespaces
+- Namespace: `VpnMonitor` root with `Core`, `Models`, `Notifications`, `Settings` sub-namespaces
 - Classes are `sealed` where possible; `VpnEvent` is a sealed record with init-only properties
 - String comparisons use `StringComparer.OrdinalIgnoreCase` for network/registry names
 - `IDisposable` pattern for Timer and graphics resources
