@@ -5,7 +5,7 @@ namespace VpnMonitor.Core;
 
 /// <summary>
 /// Creates a small tray icon at runtime without requiring an embedded .ico file.
-/// Green shield = connected, grey shield = disconnected.
+/// Green shield = connected, red shield = disconnected.
 /// </summary>
 internal static class TrayIconFactory
 {
@@ -23,7 +23,7 @@ internal static class TrayIconFactory
         // ── Shield outline ────────────────────────────────────────────────────
         var shieldColor = connected
             ? Color.FromArgb(0x22, 0xC5, 0x5E)   // emerald green
-            : Color.FromArgb(0x6B, 0x72, 0x80);   // slate grey
+            : Color.FromArgb(0xEF, 0x44, 0x44);   // red
 
         var shieldPath = BuildShieldPath(Size);
 
