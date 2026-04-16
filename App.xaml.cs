@@ -139,12 +139,16 @@ public partial class App : System.Windows.Application
     private void CheckNow()
     {
         var connections = VpnMonitorService.GetAllVpnConnections();
-        var msg = connections.Count == 0
-            ? "Активных AmneziaWG-туннелей нет"
-            : $"AmneziaWG: {string.Join(", ", connections)}";
+        bool connected = connections.Count > 0;
+
+        UpdateTrayIconState(connected);
+
+        var msg = connected
+            ? $"AmneziaWG: {string.Join(", ", connections)}"
+            : "Активных AmneziaWG-туннелей нет";
 
         _trayIcon?.ShowBalloonTip(4000, "AmneziaWG Monitor", msg,
-            connections.Count > 0 ? ToolTipIcon.Info : ToolTipIcon.Warning);
+            connected ? ToolTipIcon.Info : ToolTipIcon.Warning);
     }
 
     private void ExitApp()

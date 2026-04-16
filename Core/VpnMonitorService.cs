@@ -40,8 +40,10 @@ public sealed class VpnMonitorService : IDisposable
 
             if (!_initialized)
             {
-                _prevTunnels = current;
                 _initialized = true;
+                foreach (var name in current)
+                    Raise(VpnEventType.Connected, name);
+                _prevTunnels = current;
                 return;
             }
 
