@@ -22,7 +22,7 @@ WPF system-tray application (.NET 8, Windows x64) that monitors AmneziaWG tunnel
 
 ### Core flow
 
-`App.xaml.cs` is the entry point — creates and wires all components, owns the system tray `NotifyIcon`, and subscribes to `VpnMonitorService.VpnEventOccurred` events. Events are dispatched to the UI thread via `Dispatcher.Invoke()` and forwarded to `NotificationManager.Show()`.
+`App.xaml.cs` is the entry point — creates and wires all components, owns the system tray `NotifyIcon`, and subscribes to `VpnMonitorService.VpnEventOccurred` events. Events are dispatched to the UI thread via `Dispatcher.Invoke()` and forwarded to `NotificationManager.Show()`. Optionally plays `SystemSounds.Asterisk` if the `PlaySound` setting is enabled.
 
 ### AmneziaWG detection (Core/)
 
@@ -41,7 +41,7 @@ State is tracked via `_prevTunnels` HashSet; diffs fire `VpnEvent` records.
 
 ### Tray icon (Core/TrayIconFactory.cs)
 
-Dynamically renders a 32×32 shield icon via GDI+ at runtime (green checkmark = connected, grey X = disconnected). No embedded .ico files.
+Dynamically renders a 32×32 circle icon via GDI+ at runtime (green with checkmark = connected, red with X = disconnected). No embedded .ico files.
 
 ### Settings (Settings/, Core/SettingsService.cs)
 
@@ -53,7 +53,7 @@ Dynamically renders a 32×32 shield icon via GDI+ at runtime (green checkmark = 
 
 - WinForms `NotifyIcon` is used because WPF has no native tray icon support — the csproj enables both `UseWPF` and `UseWindowsForms`.
 - 300ms `DispatcherTimer` debounce on tray click distinguishes single-click (open settings) from double-click (check status now).
-- First poll is silent (`_initialized` flag in `VpnMonitorService`) to avoid spurious events on app startup.
+- First poll fires `Connected` events for any already-active tunnels (via `_initialized` flag in `VpnMonitorService`), then subsequent polls only fire on diff.
 - `VpnMonitorService.GetAllVpnConnections()` is a static method for on-demand status checks, used by the "Проверить сейчас" context menu item.
 
 ## Conventions
