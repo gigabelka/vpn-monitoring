@@ -19,3 +19,5 @@ c:\MyProg\vpn-monitoring\obj\Debug\net8.0-windows\refint\VpnMonitor.dll
 c:\MyProg\vpn-monitoring\obj\Debug\net8.0-windows\VpnMonitor.pdb
 c:\MyProg\vpn-monitoring\obj\Debug\net8.0-windows\VpnMonitor.genruntimeconfig.cache
 c:\MyProg\vpn-monitoring\obj\Debug\net8.0-windows\ref\VpnMonitor.dll
+C:\MyProg\vpn-monitoring\obj\Debug\net8.0-windows\Settings\SettingsWindow.baml
+C:\MyProg\vpn-monitoring\obj\Debug\net8.0-windows\Settings\SettingsWindow.g.cs

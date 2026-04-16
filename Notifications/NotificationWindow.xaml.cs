@@ -66,10 +66,13 @@ public partial class NotificationWindow : Window
 
     private bool _closing;
 
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    /// <summary>Trigger the slide-out animation followed by Close (used by auto-close timer).</summary>
+    public void AnimateClose()
     {
         if (_closing) return;
         _closing = true;
         PlaySlideOut(Close);
     }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e) => AnimateClose();
 }

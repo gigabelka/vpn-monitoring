@@ -161,6 +161,10 @@ public sealed class VpnMonitorService : IDisposable
         return all;
     }
 
+    // ── Configuration ─────────────────────────────────────────────────────────
+    public void UpdatePollInterval(int intervalMs) =>
+        _timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(intervalMs));
+
     // ── IDisposable ───────────────────────────────────────────────────────────
     public void Dispose() => _timer.Dispose();
 }

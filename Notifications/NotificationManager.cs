@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Threading;
 using VpnMonitor.Models;
 
 namespace VpnMonitor.Notifications;
@@ -23,6 +24,10 @@ public sealed class NotificationManager
 
     // ── State ─────────────────────────────────────────────────────────────────
     private readonly List<NotificationWindow> _stack = [];
+    private readonly Dictionary<NotificationWindow, DispatcherTimer> _autoCloseTimers = [];
+
+    /// <summary>Auto-close delay in seconds. 0 = manual close only.</summary>
+    public int AutoCloseDurationSeconds { get; set; } = 5;
 
     // ── Public API ────────────────────────────────────────────────────────────
 
@@ -41,14 +46,36 @@ public sealed class NotificationManager
         ApplyPosition(win, 0);
         win.Show();
         win.PlaySlideIn();
+
+        if (AutoCloseDurationSeconds > 0)
+            StartAutoClose(win);
     }
 
     // ── Internal ──────────────────────────────────────────────────────────────
+
+    private void StartAutoClose(NotificationWindow win)
+    {
+        var timer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(AutoCloseDurationSeconds)
+        };
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            if (win.IsLoaded)
+                win.AnimateClose();
+        };
+        _autoCloseTimers[win] = timer;
+        timer.Start();
+    }
 
     private void OnWindowClosed(object? sender, EventArgs e)
     {
         if (sender is NotificationWindow win)
         {
+            if (_autoCloseTimers.Remove(win, out var timer))
+                timer.Stop();
+
             _stack.Remove(win);
             RepositionAll(animateExisting: true);
         }
