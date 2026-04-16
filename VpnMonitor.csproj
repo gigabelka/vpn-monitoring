@@ -9,6 +9,5 @@
     <RootNamespace>VpnMonitor</RootNamespace>
     <AssemblyName>VpnMonitor</AssemblyName>
     <Platforms>x64</Platforms>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 </Project>

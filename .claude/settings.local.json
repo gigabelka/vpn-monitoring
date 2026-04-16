@@ -3,7 +3,22 @@
     "allow": [
       "Bash(dotnet build *)",
       "Bash(grep -E \"\\\\.\\(csproj|sln|json\\)$\")",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(xargs wc *)",
+      "Bash(powershell \"Get-Service | Select-Object Name | findstr /i amnezia\")",
+      "Bash(powershell \"Get-NetAdapter | Select-Object Name, InterfaceDescription\")",
+      "Bash(powershell \"Get-Service AmneziaVPN-service | Select-Object Name, DisplayName, Status, StartType\")",
+      "Bash(powershell \"Get-Service AmneziaWGManager | Select-Object Name, DisplayName, Status, StartType\")",
+      "Bash(powershell \"Get-NetAdapter -Name 'viktorwg22' | Select-Object Name, InterfaceDescription, Status, IfIndex\")",
+      "Bash(powershell \"Get-NetIPAddress -InterfaceAlias 'viktorwg22' 2>&1\")",
+      "Bash(powershell \"Get-Process | Select-Object Name, Id, Path | findstr /i amnezia\")",
+      "Bash(powershell \"Get-Process | Select-Object Name, Id, Path | findstr /i wireguard\")",
+      "Bash(powershell \"Get-Process -Name 'AmneziaVPN-service' 2>&1\")",
+      "Bash(powershell \"Get-Process -Name 'amneziawg' 2>&1\")",
+      "Bash(powershell \"Get-Item -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Services\\\\AmneziaVPN-service' | Select-Object Name, PSPath\")",
+      "Bash(powershell \"Get-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Services\\\\AmneziaVPN-service' | Select-Object ImagePath, DisplayName\")",
+      "Bash(powershell \"Get-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Services\\\\AmneziaWGManager' | Select-Object ImagePath, DisplayName\")",
+      "Bash(powershell \"Get-Service | Select-Object Name, DisplayName | findstr /i 'service' | head -20\")"
     ]
   }
 }

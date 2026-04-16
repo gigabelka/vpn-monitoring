@@ -18,20 +18,20 @@ No test project exists yet. No linter or formatter configured.
 
 ## Architecture
 
-WPF system-tray application (.NET 8, Windows x64) that monitors VPN connections and shows desktop notifications. No third-party NuGet packages — only .NET framework libraries. UI text is in Russian.
+WPF system-tray application (.NET 8, Windows x64) that monitors AmneziaWG tunnel connections and shows desktop notifications. No third-party NuGet packages — only .NET framework libraries. UI text is in Russian.
 
 ### Core flow
 
-`App.xaml.cs` is the entry point — creates and wires all components, owns the system tray `NotifyIcon`, and subscribes to `VpnMonitorService.VpnChanged` events. Events are dispatched to the UI thread via `Dispatcher.Invoke()` and forwarded to `NotificationManager.Show()`.
+`App.xaml.cs` is the entry point — creates and wires all components, owns the system tray `NotifyIcon`, and subscribes to `VpnMonitorService.VpnEventOccurred` events. Events are dispatched to the UI thread via `Dispatcher.Invoke()` and forwarded to `NotificationManager.Show()`.
 
-### VPN detection (Core/)
+### AmneziaWG detection (Core/)
 
-`VpnMonitorService` polls every 2 seconds using two detection sources:
+`VpnMonitorService` polls every 2 seconds using a hybrid detection approach:
 
-1. **RAS API** — P/Invoke to `rasapi32.dll` (`RasInterop.cs`) detects built-in Windows VPN types (PPTP, L2TP, SSTP, IKEv2)
-2. **Network adapters** — `NetworkInterface.GetAllNetworkInterfaces()` with keyword matching for third-party VPNs (WireGuard, OpenVPN, TAP, NordVPN, ExpressVPN, Mullvad)
+1. **Process check** — verifies `amneziawg.exe` is running via `Process.GetProcessesByName()`. If not running, no tunnels are reported.
+2. **Network adapters** — `NetworkInterface.GetAllNetworkInterfaces()` filtered by `Description` containing "WireGuard Tunnel" (AmneziaWG creates adapters with this description).
 
-State is tracked via `_prevRas` / `_prevVirtual` HashSets; diffs fire `VpnEvent` records.
+State is tracked via `_prevTunnels` HashSet; diffs fire `VpnEvent` records.
 
 ### Notifications (Notifications/)
 
@@ -62,4 +62,4 @@ Dynamically renders a 32×32 shield icon via GDI+ at runtime (green checkmark = 
 - Classes are `sealed` where possible; `VpnEvent` is a sealed record with init-only properties
 - String comparisons use `StringComparer.OrdinalIgnoreCase` for network/registry names
 - `IDisposable` pattern for Timer and graphics resources
-- Nullable reference types enabled, implicit usings enabled, unsafe blocks allowed
+- Nullable reference types enabled, implicit usings enabled

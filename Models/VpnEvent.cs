@@ -12,6 +12,6 @@ public sealed class VpnEvent
     public string       ConnectionName { get; init; } = string.Empty;
     public DateTime     Timestamp      { get; init; } = DateTime.Now;
 
-    /// <summary>Human-readable description of the event source (RAS or virtual adapter).</summary>
+    /// <summary>Detection source (AmneziaWG).</summary>
     public string Source { get; init; } = string.Empty;
 }

@@ -63,13 +63,13 @@ public partial class App : System.Windows.Application
         {
             Icon    = TrayIconFactory.Create(connected: false),
             Visible = true,
-            Text    = "VPN Monitor — нет подключений"
+            Text    = "AmneziaWG Monitor — нет подключений"
         };
 
         // Context menu
         var menu = new ContextMenuStrip();
 
-        var statusItem = new ToolStripMenuItem("Статус VPN") { Enabled = false };
+        var statusItem = new ToolStripMenuItem("Статус AmneziaWG") { Enabled = false };
         menu.Items.Add(statusItem);
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Проверить сейчас", null, (_, _) => CheckNow());
@@ -132,18 +132,18 @@ public partial class App : System.Windows.Application
         if (_trayIcon is null) return;
         _trayIcon.Icon = TrayIconFactory.Create(connected);
         _trayIcon.Text = connected
-            ? "VPN Monitor — подключён ✔"
-            : "VPN Monitor — нет подключений";
+            ? "AmneziaWG Monitor — подключён ✔"
+            : "AmneziaWG Monitor — нет подключений";
     }
 
     private void CheckNow()
     {
         var connections = VpnMonitorService.GetAllVpnConnections();
         var msg = connections.Count == 0
-            ? "Активных VPN-соединений нет"
-            : $"Активно: {string.Join(", ", connections)}";
+            ? "Активных AmneziaWG-туннелей нет"
+            : $"AmneziaWG: {string.Join(", ", connections)}";
 
-        _trayIcon?.ShowBalloonTip(4000, "VPN Monitor", msg,
+        _trayIcon?.ShowBalloonTip(4000, "AmneziaWG Monitor", msg,
             connections.Count > 0 ? ToolTipIcon.Info : ToolTipIcon.Warning);
     }
 
