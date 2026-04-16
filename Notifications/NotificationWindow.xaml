@@ -1,0 +1,149 @@
+<Window x:Class="VpnMonitor.Notifications.NotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Width="340"
+        Height="88"
+        ResizeMode="NoResize"
+        IsHitTestVisible="True">
+
+    <!-- ═══════════════════════════ Animations ════════════════════════════ -->
+    <Window.Resources>
+
+        <!-- Slide in from the right + fade -->
+        <Storyboard x:Key="SlideIn">
+            <DoubleAnimation
+                Storyboard.TargetName="RootBorder"
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                From="70" To="0" Duration="0:0:0.35">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="RootBorder"
+                Storyboard.TargetProperty="Opacity"
+                From="0" To="1" Duration="0:0:0.3"/>
+        </Storyboard>
+
+        <!-- Slide out to the right + fade -->
+        <Storyboard x:Key="SlideOut" x:Name="SlideOutSb">
+            <DoubleAnimation
+                Storyboard.TargetName="RootBorder"
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                From="0" To="70" Duration="0:0:0.25">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="RootBorder"
+                Storyboard.TargetProperty="Opacity"
+                From="1" To="0" Duration="0:0:0.25"/>
+        </Storyboard>
+
+        <!-- Close button style -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background"   Value="Transparent"/>
+            <Setter Property="Foreground"   Value="#6B7280"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor"       Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="4" Padding="5,3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#2AFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#40FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- ══════════════════════════════ Root ══════════════════════════════ -->
+    <Border x:Name="RootBorder"
+            CornerRadius="10"
+            Margin="8,4,8,4"
+            Background="#1E1E2E"
+            Opacity="0"
+            SnapsToDevicePixels="True">
+
+        <Border.RenderTransform>
+            <TranslateTransform X="70"/>
+        </Border.RenderTransform>
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="22" ShadowDepth="5"
+                              Opacity="0.55" Color="#000000" Direction="270"/>
+        </Border.Effect>
+
+        <Grid>
+            <!-- Left accent bar (coloured strip) -->
+            <Border x:Name="AccentBar"
+                    Width="5"
+                    HorizontalAlignment="Left"
+                    CornerRadius="10,0,0,10"
+                    Background="{Binding AccentBrush}"/>
+
+            <!-- Main content -->
+            <Grid Margin="16,0,10,0" Height="88">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>   <!-- icon -->
+                    <ColumnDefinition Width="*"/>      <!-- text -->
+                    <ColumnDefinition Width="Auto"/>   <!-- close -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Icon -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding IconText}"
+                           FontSize="28"
+                           VerticalAlignment="Center"
+                           Margin="2,0,12,0"/>
+
+                <!-- Title + subtitle + time -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,4,0">
+                    <TextBlock Text="{Binding Title}"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <TextBlock Text="{Binding Message}"
+                               Foreground="#9CA3AF"
+                               FontSize="11.5"
+                               Margin="0,2,0,0"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <TextBlock Text="{Binding TimestampText}"
+                               Foreground="#4B5563"
+                               FontSize="10"
+                               Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <!-- Close button -->
+                <Button Grid.Column="2"
+                        Content="✕"
+                        Style="{StaticResource CloseButtonStyle}"
+                        FontSize="12"
+                        Foreground="#6B7280"
+                        VerticalAlignment="Center"
+                        Click="CloseButton_Click"/>
+            </Grid>
+        </Grid>
+    </Border>
+
+</Window>
