@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Net.NetworkInformation;
-using VpnMonitor.Models;
+using VpnMonitoring.Models;
 
-namespace VpnMonitor.Core;
+namespace VpnMonitoring.Core;
 
 /// <summary>
 /// Monitors AmneziaWG tunnel connections by combining two checks:
@@ -11,7 +11,7 @@ namespace VpnMonitor.Core;
 ///
 /// Fires <see cref="VpnEventOccurred"/> on connect / disconnect.
 /// </summary>
-public sealed class VpnMonitorService : IDisposable
+public sealed class VpnMonitoringService : IDisposable
 {
     private const string AmneziaProcessName = "amneziawg";
     private const string TunnelAdapterDescription = "WireGuard Tunnel";
@@ -23,7 +23,7 @@ public sealed class VpnMonitorService : IDisposable
 
     public event EventHandler<VpnEvent>? VpnEventOccurred;
 
-    public VpnMonitorService(int pollIntervalMs = 2000)
+    public VpnMonitoringService(int pollIntervalMs = 2000)
     {
         _timer = new System.Threading.Timer(
             callback: Poll,
@@ -52,7 +52,7 @@ public sealed class VpnMonitorService : IDisposable
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[VpnMonitor] Poll error: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[VpnMonitoring] Poll error: {ex.Message}");
         }
     }
 

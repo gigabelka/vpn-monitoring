@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace VpnMonitor.Core;
+namespace VpnMonitoring.Core;
 
 /// <summary>
 /// Creates a small tray icon at runtime without requiring an embedded .ico file.

@@ -1,14 +1,14 @@
 using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
-using VpnMonitor.Models;
+using VpnMonitoring.Models;
 
-namespace VpnMonitor.Core;
+namespace VpnMonitoring.Core;
 
 public sealed class SettingsService
 {
     private static readonly string Dir =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VpnMonitor");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VpnMonitoring");
 
     private static readonly string FilePath = Path.Combine(Dir, "settings.json");
 
@@ -58,7 +58,7 @@ public sealed class SettingsService
     private static void ApplyStartWithWindows(bool enabled)
     {
         const string keyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
-        const string valueName = "VpnMonitor";
+        const string valueName = "VpnMonitoring";
 
         try
         {

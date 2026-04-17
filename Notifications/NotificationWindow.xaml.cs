@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using VpnMonitor.Models;
+using VpnMonitoring.Models;
 
-namespace VpnMonitor.Notifications;
+namespace VpnMonitoring.Notifications;
 
 public partial class NotificationWindow : Window
 {

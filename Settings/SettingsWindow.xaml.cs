@@ -2,9 +2,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using VpnMonitor.Models;
+using VpnMonitoring.Models;
 
-namespace VpnMonitor.Settings;
+namespace VpnMonitoring.Settings;
 
 public partial class SettingsWindow : Window, INotifyPropertyChanged
 {

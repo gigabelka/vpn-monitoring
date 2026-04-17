@@ -2,17 +2,17 @@ using System.Media;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using VpnMonitor.Core;
-using VpnMonitor.Models;
-using VpnMonitor.Notifications;
-using VpnMonitor.Settings;
+using VpnMonitoring.Core;
+using VpnMonitoring.Models;
+using VpnMonitoring.Notifications;
+using VpnMonitoring.Settings;
 
-namespace VpnMonitor;
+namespace VpnMonitoring;
 
 public partial class App : System.Windows.Application
 {
     private NotifyIcon?            _trayIcon;
-    private VpnMonitorService?     _monitor;
+    private VpnMonitoringService?     _monitor;
     private NotificationManager?   _notificationManager;
     private SettingsService?       _settings;
     private SettingsWindow?        _settingsWindow;
@@ -33,7 +33,7 @@ public partial class App : System.Windows.Application
             AutoCloseDurationSeconds = _settings.Current.NotificationDurationSeconds
         };
 
-        _monitor = new VpnMonitorService(_settings.Current.PollIntervalSeconds * 1000);
+        _monitor = new VpnMonitoringService(_settings.Current.PollIntervalSeconds * 1000);
         _monitor.VpnEventOccurred += OnVpnEvent;
 
         SetupTrayIcon();
@@ -138,7 +138,7 @@ public partial class App : System.Windows.Application
 
     private void CheckNow()
     {
-        var connections = VpnMonitorService.GetAllVpnConnections();
+        var connections = VpnMonitoringService.GetAllVpnConnections();
         bool connected = connections.Count > 0;
 
         UpdateTrayIconState(connected);

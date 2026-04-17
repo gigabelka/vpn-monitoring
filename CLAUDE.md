@@ -22,11 +22,11 @@ WPF system-tray application (.NET 8, Windows x64) that monitors AmneziaWG tunnel
 
 ### Core flow
 
-`App.xaml.cs` is the entry point — creates and wires all components, owns the system tray `NotifyIcon`, and subscribes to `VpnMonitorService.VpnEventOccurred` events. Events are dispatched to the UI thread via `Dispatcher.Invoke()` and forwarded to `NotificationManager.Show()`. Optionally plays `SystemSounds.Asterisk` if the `PlaySound` setting is enabled.
+`App.xaml.cs` is the entry point — creates and wires all components, owns the system tray `NotifyIcon`, and subscribes to `VpnMonitoringService.VpnEventOccurred` events. Events are dispatched to the UI thread via `Dispatcher.Invoke()` and forwarded to `NotificationManager.Show()`. Optionally plays `SystemSounds.Asterisk` if the `PlaySound` setting is enabled.
 
 ### AmneziaWG detection (Core/)
 
-`VpnMonitorService` polls every 2 seconds using a hybrid detection approach:
+`VpnMonitoringService` polls every 2 seconds using a hybrid detection approach:
 
 1. **Process check** — verifies `amneziawg.exe` is running via `Process.GetProcessesByName()`. If not running, no tunnels are reported.
 2. **Network adapters** — `NetworkInterface.GetAllNetworkInterfaces()` filtered by `Description` containing "WireGuard Tunnel" (AmneziaWG creates adapters with this description).
@@ -45,7 +45,7 @@ Dynamically renders a 32×32 circle icon via GDI+ at runtime (green with checkma
 
 ### Settings (Settings/, Core/SettingsService.cs)
 
-`SettingsService` persists `AppSettings` to `%LOCALAPPDATA%\VpnMonitor\settings.json` using atomic writes (write to `.tmp`, then `File.Move`). It also manages the Windows autostart registry key (`HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`).
+`SettingsService` persists `AppSettings` to `%LOCALAPPDATA%\VpnMonitoring\settings.json` using atomic writes (write to `.tmp`, then `File.Move`). It also manages the Windows autostart registry key (`HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`).
 
 `SettingsWindow` is a frameless dark-themed WPF window implementing `INotifyPropertyChanged` directly (no MVVM framework). Save flow: `SettingsWindow.SettingsSaved` → `App.OnSettingsSaved()` → `SettingsService.Save()`, which also live-updates poll interval and notification duration on the running services.
 
@@ -53,12 +53,12 @@ Dynamically renders a 32×32 circle icon via GDI+ at runtime (green with checkma
 
 - WinForms `NotifyIcon` is used because WPF has no native tray icon support — the csproj enables both `UseWPF` and `UseWindowsForms`.
 - 300ms `DispatcherTimer` debounce on tray click distinguishes single-click (open settings) from double-click (check status now).
-- First poll fires `Connected` events for any already-active tunnels (via `_initialized` flag in `VpnMonitorService`), then subsequent polls only fire on diff.
-- `VpnMonitorService.GetAllVpnConnections()` is a static method for on-demand status checks, used by the "Проверить сейчас" context menu item.
+- First poll fires `Connected` events for any already-active tunnels (via `_initialized` flag in `VpnMonitoringService`), then subsequent polls only fire on diff.
+- `VpnMonitoringService.GetAllVpnConnections()` is a static method for on-demand status checks, used by the "Проверить сейчас" context menu item.
 
 ## Conventions
 
-- Namespace: `VpnMonitor` root with `Core`, `Models`, `Notifications`, `Settings` sub-namespaces
+- Namespace: `VpnMonitoring` root with `Core`, `Models`, `Notifications`, `Settings` sub-namespaces
 - Classes are `sealed` where possible; `VpnEvent` is a sealed record with init-only properties
 - String comparisons use `StringComparer.OrdinalIgnoreCase` for network/registry names
 - `IDisposable` pattern for Timer and graphics resources

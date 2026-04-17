@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Threading;
-using VpnMonitor.Models;
+using VpnMonitoring.Models;
 
-namespace VpnMonitor.Notifications;
+namespace VpnMonitoring.Notifications;
 
 /// <summary>
 /// Manages a vertical stack of <see cref="NotificationWindow"/> instances

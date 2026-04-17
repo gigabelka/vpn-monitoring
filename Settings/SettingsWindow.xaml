@@ -1,4 +1,4 @@
-<Window x:Class="VpnMonitor.Settings.SettingsWindow"
+<Window x:Class="VpnMonitoring.Settings.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStyle="None"

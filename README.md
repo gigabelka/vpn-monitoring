@@ -9,13 +9,13 @@
 ## Структура проекта
 
 ```
-VpnMonitor/
+VpnMonitoring/
 ├── App.xaml / App.xaml.cs          — точка входа, трей, инициализация
 ├── Models/
 │   └── VpnEvent.cs                 — модель события (Connected / Disconnected)
 ├── Core/
 │   ├── RasInterop.cs               — P/Invoke для Windows RAS API
-│   ├── VpnMonitorService.cs        — опрос RAS API + виртуальных адаптеров
+│   ├── VpnMonitoringService.cs        — опрос RAS API + виртуальных адаптеров
 │   └── TrayIconFactory.cs          — генерация иконки трея через GDI+
 └── Notifications/
     ├── NotificationWindow.xaml     — всплывающее окно (WPF, без рамки)
@@ -27,10 +27,10 @@ VpnMonitor/
 
 ## Требования
 
-| | |
-|---|---|
-| SDK | .NET 8 SDK |
-| OS  | Windows 10 / 11 (x64) |
+|     |                              |
+| --- | ---------------------------- |
+| SDK | .NET 8 SDK                   |
+| OS  | Windows 10 / 11 (x64)        |
 | IDE | Visual Studio 2022 или Rider |
 
 ---
@@ -46,7 +46,7 @@ dotnet publish -c Release -r win-x64 --self-contained true \
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
-Итоговый файл: `bin\Release\net8.0-windows\win-x64\publish\VpnMonitor.exe`
+Итоговый файл: `bin\Release\net8.0-windows\win-x64\publish\VpnMonitoring.exe`
 
 ---
 
@@ -58,7 +58,7 @@ dotnet publish -c Release -r win-x64 --self-contained true \
 // Вставьте в App.OnStartup() после первого запуска
 var key = Registry.CurrentUser.OpenSubKey(
     @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", writable: true)!;
-key.SetValue("VpnMonitor", Environment.ProcessPath!);
+key.SetValue("VpnMonitoring", Environment.ProcessPath!);
 ```
 
 Или просто создайте ярлык в `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`.
@@ -69,7 +69,7 @@ key.SetValue("VpnMonitor", Environment.ProcessPath!);
 
 ### Мониторинг VPN
 
-`VpnMonitorService` опрашивает два источника каждые 2 секунды:
+`VpnMonitoringService` опрашивает два источника каждые 2 секунды:
 
 1. **RAS API** (`rasapi32.dll` → `RasEnumConnections`)  
    Определяет встроенные Windows VPN: PPTP, L2TP/IPsec, SSTP, IKEv2.
@@ -90,13 +90,13 @@ key.SetValue("VpnMonitor", Environment.ProcessPath!);
 
 ## Кастомизация
 
-| Что | Где |
-|---|---|
-| Интервал опроса | `new VpnMonitorService(pollIntervalMs: 2000)` в `App.xaml.cs` |
-| Ключевые слова виртуальных адаптеров | `VirtualVpnKeywords` в `VpnMonitorService.cs` |
-| Размер / цвет уведомления | `NotificationWindow.xaml` |
-| Отступы / высота уведомления | `WindowHeight`, `ScreenMargin` в `NotificationManager.cs` |
-| Позиция стека | `ComputeTop()` в `NotificationManager.cs` |
+| Что                                  | Где                                                              |
+| ------------------------------------ | ---------------------------------------------------------------- |
+| Интервал опроса                      | `new VpnMonitoringService(pollIntervalMs: 2000)` в `App.xaml.cs` |
+| Ключевые слова виртуальных адаптеров | `VirtualVpnKeywords` в `VpnMonitoringService.cs`                 |
+| Размер / цвет уведомления            | `NotificationWindow.xaml`                                        |
+| Отступы / высота уведомления         | `WindowHeight`, `ScreenMargin` в `NotificationManager.cs`        |
+| Позиция стека                        | `ComputeTop()` в `NotificationManager.cs`                        |
 
 ---
 

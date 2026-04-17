@@ -1,4 +1,4 @@
-namespace VpnMonitor.Models;
+namespace VpnMonitoring.Models;
 
 public sealed class AppSettings
 {
