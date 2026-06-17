@@ -29,7 +29,7 @@ VpnMonitoring/
 
 |     |                              |
 | --- | ---------------------------- |
-| SDK | .NET 8 SDK                   |
+| SDK | .NET 10 SDK                  |
 | OS  | Windows 10 / 11 (x64)        |
 | IDE | Visual Studio 2022 или Rider |
 
@@ -45,7 +45,7 @@ dotnet run
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
-Итоговый файл: `bin\Release\net8.0-windows\win-x64\publish\VpnMonitoring.exe`
+Итоговый файл: `bin\Release\net10.0-windows\win-x64\publish\VpnMonitoring.exe`
 
 ---
 

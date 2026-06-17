@@ -18,7 +18,7 @@ No test project exists yet. No linter or formatter configured.
 
 ## Architecture
 
-WPF system-tray application (.NET 8, Windows x64) that monitors AmneziaWG tunnel connections and shows desktop notifications. No third-party NuGet packages — only .NET framework libraries. UI text is in Russian.
+WPF system-tray application (.NET 10, Windows x64) that monitors AmneziaWG tunnel connections and shows desktop notifications. No third-party NuGet packages — only .NET framework libraries. UI text is in Russian.
 
 ### Core flow
 
