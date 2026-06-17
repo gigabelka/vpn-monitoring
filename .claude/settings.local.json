@@ -18,7 +18,9 @@
       "Bash(powershell \"Get-Item -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Services\\\\AmneziaVPN-service' | Select-Object Name, PSPath\")",
       "Bash(powershell \"Get-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Services\\\\AmneziaVPN-service' | Select-Object ImagePath, DisplayName\")",
       "Bash(powershell \"Get-ItemProperty -Path 'HKLM:\\\\System\\\\CurrentControlSet\\\\Services\\\\AmneziaWGManager' | Select-Object ImagePath, DisplayName\")",
-      "Bash(powershell \"Get-Service | Select-Object Name, DisplayName | findstr /i 'service' | head -20\")"
+      "Bash(powershell \"Get-Service | Select-Object Name, DisplayName | findstr /i 'service' | head -20\")",
+      "Bash(ls -la \"/c/Program Files/dotnet/dotnet.exe\" \"/c/Program Files \\(x86\\)/dotnet/dotnet.exe\" \"$HOME/.dotnet/dotnet\" 2>/dev/null || echo \"not found in common paths\")",
+      "Read(//c/Program Files/dotnet/**)"
     ]
   }
 }

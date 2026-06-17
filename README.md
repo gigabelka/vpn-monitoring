@@ -42,8 +42,7 @@ VpnMonitoring/
 dotnet run
 
 # Публикация в единый .exe без зависимостей
-dotnet publish -c Release -r win-x64 --self-contained true \
-  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
 Итоговый файл: `bin\Release\net8.0-windows\win-x64\publish\VpnMonitoring.exe`
